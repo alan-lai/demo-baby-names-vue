@@ -1,28 +1,58 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <header>
+      <Search v-bind="{updateKeyword}" />
+    </header>
+    <main>
+      <ShortList v-bind="{babyNames, shortList, toggleShortListEntry}" />
+      <NameList v-bind="{babyNames, shortList, toggleShortListEntry, keyword}" />
+      <Credit />
+    </main>    
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Search from './components/Search.vue'
+import ShortList from './components/ShortList.vue'
+import NameList from './components/NameList.vue'
+import Credit from './components/Credit.vue'
+import BabyNameLibrary from './data/data';
 
 export default {
-  name: 'app',
+  name: 'App',
+  data () {
+    return {
+      babyNames: BabyNameLibrary,
+      shortList: [],
+      keyword: ''
+    }
+  },
+  methods: {
+    updateKeyword(newKeyword) {
+      this.keyword = newKeyword;
+    },
+    toggleShortListEntry (id) {
+      // console.log(id)
+      const index = this.shortList.indexOf(id);
+      if(index >= 0) {
+        let newShortList = this.shortList;
+        newShortList.splice(index, 1);
+        // console.log(newShortList)
+        this.shortList = newShortList;
+      } else {
+        let newShortList = this.shortList.concat([id]);
+        this.shortList = newShortList;
+      }
+    }
+  },
   components: {
-    HelloWorld
+    Search,
+    ShortList,
+    NameList,
+    Credit
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
